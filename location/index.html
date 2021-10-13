@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  </head>
+  <body>
+    <p>Click the button to get your coordinates.</p>
+    <button onclick="getLocation()">Try It</button>
+    <p id="demo"></p>
+  </body>
+</html>
+<script>
+  var x = document.getElementById("demo");
+
+function error(text) {
+    x.innerHTML = "Error: " + text.message;
+}
+
+function getLocation() {
+  x.innerHTML = "geolocation.getCurrentPosition: Retrieving location ...";
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition, error, {
+      'enableHighAccuracy': true,
+      'timeout': 60000,
+      'maximumAge': 0
+    });
+  } else { 
+    x.innerHTML = "Geolocation is not supported by this browser.";
+  }
+}
+ 
+function showPosition(position) { 
+  var d = new Date(position.timestamp);
+  // https://stackoverflow.com/questions/3089308/converting-domtimestamp-to-localized-hhmmss-mm-dd-yy-via-javascript
+  
+  console.log("position.coords", position.coords);
+  
+  x.innerHTML = "Latitude: " + position.coords.latitude + 
+    "<br>Longitude: " + position.coords.longitude + 
+    '<br>Timestamp: ' + d.toString() +
+    "<br>Accuracy: " + position.coords.accuracy + 
+    "<br>Altitude accuracy: " + position.coords.altitudeAccuracy + 
+    "<br>Heading: " + position.coords.heading + 
+    "<br>Speed: " + position.coords.speed + 
+    '<br><a target="_blank" href="https://www.google.com/maps/search/?api=1&query=' + position.coords.latitude + ',' + position.coords.longitude + '" />Display on map</a>';
+
+}
+</script>
